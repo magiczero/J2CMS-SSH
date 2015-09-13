@@ -1,0 +1,10 @@
+/META-INF/
+/applicationContext.xml
+/ehcache.xml
+/fckeditor.properties
+/junit/
+/log4j.properties
+/messageResource_en_US.properties
+/messageResource_zh_CN.properties
+/org/
+/struts.xml
