@@ -280,6 +280,32 @@ function showErrorMesssgeDiv(error,element){
     		$('#save_selector_lowerLimit').focus();
     		return false;
 		}
+    	<%-- 可选项--%>
+    	var ratio = $.trim($('#save_selector_ratio').val());		<%-- 鉴别比 --%>
+    	var sampleSize = $.trim($('#save_selector_sampleSize').val());			<%-- 样本量--%>
+    	var productor = $.trim($('#save_selector_producerRisk').val());	<%-- 生产方风险 --%>
+    	var user = $.trim($('#save_selector_useRisk').val());			<%-- 使用方风险--%>
+    	
+    	if(ratio!='' && simpleSize=='' && productor=='' && user=='') {
+    		$('#save_selector_ratio').poshytip({
+    	    	className: 'tip-darkgray',
+    	    	content: 'Hey, there! This is a tooltip.',
+    	    	showOn: 'none',
+    	    	alignTo: 'target',
+    	    	alignX: 'inner-left',
+    	    	offsetX: 0,
+    	    	offsetY: 5,
+    	    	showTimeout: 100
+    	    });
+    		if(isNaN($productor)) {
+    			$('#save_selector_ratio').poshytip('update','请填入数字');
+        		$('#save_selector_ratio').poshytip('show');
+        		$('#save_selector_ratio').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    	}
     }
     
     //指数分布定时截尾
@@ -821,8 +847,14 @@ function showErrorMesssgeDiv(error,element){
 			$('#ratioTd').append($txt3);
 		} else if(sel1 == 2) {			//二项分布
 			if(sel2==2){	//定数结尾
+				$txt1 = $('<input type="text" name="selector.producerRisk" size="10" value="" id="save_selector_producerRisk"/>');
+	    		$txt2 = $('<input type="text" name="selector.useRisk" size="10" value="" id="save_selector_useRisk"/>');
 				$txt3 = $('<input type="text" name="selector.ratio" size="10" id="save_selector_ratio"/>');
-			
+				
+				$('#save_selector_producerRisk').remove();
+				$('#producerRiskTd').append($txt1);
+				$('#save_selector_useRisk').remove();
+				$('#useRiskTd').append($txt2);
 				$('#save_selector_ratio').remove();
 				$('#ratioTd').append($txt3);
 			} else{
