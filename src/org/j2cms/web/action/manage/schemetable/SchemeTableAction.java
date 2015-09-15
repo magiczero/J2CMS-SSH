@@ -12,6 +12,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.j2cms.model.QueryResult;
 import org.j2cms.model.schemetable.SchemeTable;
 import org.j2cms.service.SchemeTableService;
+import static org.j2cms.utils.CalculationUtils.factorial;
+import static org.j2cms.utils.CalculationUtils.power;
 import org.j2cms.web.action.EntityAction;
 
 @ParentPackage(value="json-default")
@@ -107,7 +109,28 @@ public class SchemeTableAction extends EntityAction<SchemeTable> {
 	public String getEXDS1() {			//二项定数
 		double p0 = 1.0d-lower;
 		double p1 = diffratio * p0;
+		int n1=0, c1=0;
+		outer:for(int c=1; c<=60; c++) {
+			c1 = c;
+			for(int n = c+2; n<=2000; n++) {
+				n1 = n;
+				double a ,b;
+				a = b = 0;
+				for(int j = 0; j<=c; j++) {
+					b += (factorial(n).divide(factorial(n-j).multiply(factorial(j)))).doubleValue()*power(p1,j)*power(1-p1,n-j);
+					a += (factorial(n).divide(factorial(n-j).multiply(factorial(j)))).doubleValue()*power(p0,j)*power(1-p0,n-j);
+				}
+				
+				double absValue = java.lang.Math.abs(1-a-b);
+				
+				if(absValue <= 0.02d) break outer;
+			}
+		}
 		
+		schemeAjax = "[";
+		if(c1 == 60 && n1 == 2000) {
+			//得到最小值 min|a-b|
+		}
 		
 		return SUCCESS;
 	}
