@@ -26,6 +26,8 @@ public class SchemeTableAction extends EntityAction<SchemeTable> {
 	private SchemeTableService stService;
 	
 	private SchemeTable st;
+	
+	private Double lower;			//	最顶可接受值
 
 	private Double productor;
 	
@@ -97,6 +99,15 @@ public class SchemeTableAction extends EntityAction<SchemeTable> {
 	@Action(value="getDingshi1",results={@Result(name="success", type="json", params={"root","st"})})
 	public String ajaxDingshi1() {
 		st = stService.getSchemeByMinDingshi(multiple);
+		
+		return SUCCESS;
+	}
+	
+	@Action(value="getErXiangDingshu1",results={@Result(name="success", type="json", params={"root","schemeAjax"})})
+	public String getEXDS1() {			//二项定数
+		double p0 = 1.0d-lower;
+		double p1 = diffratio * p0;
+		
 		
 		return SUCCESS;
 	}
@@ -339,6 +350,14 @@ public class SchemeTableAction extends EntityAction<SchemeTable> {
 
 	public void setTruncation(Integer truncation) {
 		this.truncation = truncation;
+	}
+
+	public Double getLower() {
+		return lower;
+	}
+
+	public void setLower(Double lower) {
+		this.lower = lower;
 	}
 
 }

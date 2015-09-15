@@ -281,28 +281,233 @@ function showErrorMesssgeDiv(error,element){
     		return false;
 		}
     	<%-- 可选项--%>
-    	var ratio = $.trim($('#save_selector_ratio').val());		<%-- 鉴别比 --%>
-    	var sampleSize = $.trim($('#save_selector_sampleSize').val());			<%-- 样本量--%>
-    	var productor = $.trim($('#save_selector_producerRisk').val());	<%-- 生产方风险 --%>
-    	var user = $.trim($('#save_selector_useRisk').val());			<%-- 使用方风险--%>
+    	var $ratio = $.trim($('#save_selector_ratio').val());		<%-- 鉴别比 --%>
+    	var $sampleSize = $.trim($('#save_selector_sampleSize').val());			<%-- 样本量--%>
+    	var $productor = $.trim($('#save_selector_producerRisk').val());	<%-- 生产方风险 --%>
+    	var $user = $.trim($('#save_selector_useRisk').val());			<%-- 使用方风险--%>
     	
-    	if(ratio!='' && simpleSize=='' && productor=='' && user=='') {
-    		$('#save_selector_ratio').poshytip({
-    	    	className: 'tip-darkgray',
-    	    	content: 'Hey, there! This is a tooltip.',
-    	    	showOn: 'none',
-    	    	alignTo: 'target',
-    	    	alignX: 'inner-left',
-    	    	offsetX: 0,
-    	    	offsetY: 5,
-    	    	showTimeout: 100
-    	    });
-    		if(isNaN($productor)) {
+    	if($ratio!='' && $simpleSize=='' && $productor=='' && $user=='') {
+    		if(isNaN($ratio)) {
     			$('#save_selector_ratio').poshytip('update','请填入数字');
         		$('#save_selector_ratio').poshytip('show');
         		$('#save_selector_ratio').poshytip('hideDelayed',3000);
         		
         		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    		
+    		$.ajax({
+    			type:"POST",
+    			url:"../schemetable/getErXiangDingshu1.action?lower="+$lowerLimit+"&diffratio="+$ratio,
+    			dataType : "json",
+    			success:function(data){
+    				if(data == null){
+    					alert('未生成试验方案');
+    				} else {
+    					var data1 = eval(data);
+    					//$('#dingshi tr:not(:first)').remove();
+    					$('#dingshi tbody').empty();
+    					var $tbody = '';
+    					var num = 0;
+    					for(var i in data1) {
+    						num++;
+    						if(num%2 == 0) {
+    							$tbody += '<tr class="odd">';
+    						} else {
+    							$tbody += '<tr>';
+    						}
+    						$tbody += '<td>'+data1[i].schemeNum+'</td><td>'+data1[i].pro1+'%</td><td>'+data1[i].use1+'%</td><td>'+data1[i].pro2+'%</td><td>'+data1[i].use2+'%</td><td>'+data1[i].dr+'</td><td>'+data1[i].testTime+'</td><td>'+data1[i].rejection+'</td><td>'+data1[i].receive+'</td></tr>';
+    					}
+    					$('#dingshi tbody').html($tbody);
+    					
+    				}
+    			}
+    		});
+    	} else if($ratio=='' && $simpleSize!='' && $productor=='' && $user=='') {
+    		if(isNaN($simpleSize)) {
+    			$('#save_selector_sampleSize').poshytip('update','请填入数字');
+        		$('#save_selector_sampleSize').poshytip('show');
+        		$('#save_selector_sampleSize').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_sampleSize').focus();
+        		return false;
+    		}
+    		
+    	} else if($ratio=='' && $simpleSize=='' && $productor!='' && $user!=''){
+    		if(isNaN($productor)) {
+    			$('#save_selector_producerRisk').poshytip('update','请填入数字');
+        		$('#save_selector_producerRisk').poshytip('show');
+        		$('#save_selector_producerRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_producerRisk').focus();
+        		return false;
+    		}
+    		if(isNaN($user)) {
+    			$('#save_selector_useRisk').poshytip('update','请填入数字');
+        		$('#save_selector_useRisk').poshytip('show');
+        		$('#save_selector_useRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_useRisk').focus();
+        		return false;
+    		}
+    		
+    	} else if($ratio!='' && $simpleSize=='' && $productor!='' && $user==''){
+    		if(isNaN($ratio)) {
+    			$('#save_selector_ratio').poshytip('update','请填入数字');
+        		$('#save_selector_ratio').poshytip('show');
+        		$('#save_selector_ratio').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    		if(isNaN($productor)) {
+    			$('#save_selector_producerRisk').poshytip('update','请填入数字');
+        		$('#save_selector_producerRisk').poshytip('show');
+        		$('#save_selector_producerRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_producerRisk').focus();
+        		return false;
+    		}
+    	} else if($ratio!='' && $simpleSize=='' && $productor=='' && $user!='') {
+    		if(isNaN($ratio)) {
+    			$('#save_selector_ratio').poshytip('update','请填入数字');
+        		$('#save_selector_ratio').poshytip('show');
+        		$('#save_selector_ratio').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    		if(isNaN($user)) {
+    			$('#save_selector_useRisk').poshytip('update','请填入数字');
+        		$('#save_selector_useRisk').poshytip('show');
+        		$('#save_selector_useRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_useRisk').focus();
+        		return false;
+    		}
+    	} else if($ratio!='' && $simpleSize!='' && $productor=='' && $user=='') {
+    		if(isNaN($ratio)) {
+    			$('#save_selector_ratio').poshytip('update','请填入数字');
+        		$('#save_selector_ratio').poshytip('show');
+        		$('#save_selector_ratio').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    		if(isNaN($simpleSize)) {
+    			$('#save_selector_sampleSize').poshytip('update','请填入数字');
+        		$('#save_selector_sampleSize').poshytip('show');
+        		$('#save_selector_sampleSize').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_sampleSize').focus();
+        		return false;
+    		}
+    	} else if($ratio!='' && $simpleSize=='' && $productor!='' && $user!='') {
+    		if(isNaN($ratio)) {
+    			$('#save_selector_ratio').poshytip('update','请填入数字');
+        		$('#save_selector_ratio').poshytip('show');
+        		$('#save_selector_ratio').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    		if(isNaN($productor)) {
+    			$('#save_selector_producerRisk').poshytip('update','请填入数字');
+        		$('#save_selector_producerRisk').poshytip('show');
+        		$('#save_selector_producerRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_producerRisk').focus();
+        		return false;
+    		}
+    		if(isNaN($user)) {
+    			$('#save_selector_useRisk').poshytip('update','请填入数字');
+        		$('#save_selector_useRisk').poshytip('show');
+        		$('#save_selector_useRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_useRisk').focus();
+        		return false;
+    		}
+    	} else if($ratio!='' && $simpleSize!='' && $productor!='' && $user=='') {
+    		if(isNaN($ratio)) {
+    			$('#save_selector_ratio').poshytip('update','请填入数字');
+        		$('#save_selector_ratio').poshytip('show');
+        		$('#save_selector_ratio').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    		if(isNaN($simpleSize)) {
+    			$('#save_selector_sampleSize').poshytip('update','请填入数字');
+        		$('#save_selector_sampleSize').poshytip('show');
+        		$('#save_selector_sampleSize').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_sampleSize').focus();
+        		return false;
+    		}
+    		if(isNaN($productor)) {
+    			$('#save_selector_producerRisk').poshytip('update','请填入数字');
+        		$('#save_selector_producerRisk').poshytip('show');
+        		$('#save_selector_producerRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_producerRisk').focus();
+        		return false;
+    		}
+    	} else if($ratio!='' && $simpleSize!='' && $productor=='' && $user!='') {
+    		if(isNaN($ratio)) {
+    			$('#save_selector_ratio').poshytip('update','请填入数字');
+        		$('#save_selector_ratio').poshytip('show');
+        		$('#save_selector_ratio').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    		if(isNaN($simpleSize)) {
+    			$('#save_selector_sampleSize').poshytip('update','请填入数字');
+        		$('#save_selector_sampleSize').poshytip('show');
+        		$('#save_selector_sampleSize').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_sampleSize').focus();
+        		return false;
+    		}
+    		if(isNaN($user)) {
+    			$('#save_selector_useRisk').poshytip('update','请填入数字');
+        		$('#save_selector_useRisk').poshytip('show');
+        		$('#save_selector_useRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_useRisk').focus();
+        		return false;
+    		}
+    	} else if($ratio!='' && $simpleSize!='' && $productor!='' && $user!='') {
+    		if(isNaN($ratio)) {
+    			$('#save_selector_ratio').poshytip('update','请填入数字');
+        		$('#save_selector_ratio').poshytip('show');
+        		$('#save_selector_ratio').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_ratio').focus();
+        		return false;
+    		}
+    		if(isNaN($simpleSize)) {
+    			$('#save_selector_sampleSize').poshytip('update','请填入数字');
+        		$('#save_selector_sampleSize').poshytip('show');
+        		$('#save_selector_sampleSize').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_sampleSize').focus();
+        		return false;
+    		}
+    		if(isNaN($productor)) {
+    			$('#save_selector_producerRisk').poshytip('update','请填入数字');
+        		$('#save_selector_producerRisk').poshytip('show');
+        		$('#save_selector_producerRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_producerRisk').focus();
+        		return false;
+    		}
+    		if(isNaN($user)) {
+    			$('#save_selector_useRisk').poshytip('update','请填入数字');
+        		$('#save_selector_useRisk').poshytip('show');
+        		$('#save_selector_useRisk').poshytip('hideDelayed',3000);
+        		
+        		$('#save_selector_useRisk').focus();
         		return false;
     		}
     	}
