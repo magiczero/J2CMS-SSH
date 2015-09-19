@@ -14,6 +14,7 @@ import org.j2cms.model.schemetable.SchemeTable;
 import org.j2cms.service.SchemeTableService;
 import static org.j2cms.utils.CalculationUtils.factorial;
 import static org.j2cms.utils.CalculationUtils.power;
+import static java.lang.Math.abs;
 import org.j2cms.web.action.EntityAction;
 
 @ParentPackage(value="json-default")
@@ -121,9 +122,22 @@ public class SchemeTableAction extends EntityAction<SchemeTable> {
 					a += (factorial(n).divide(factorial(n-j).multiply(factorial(j)))).doubleValue()*power(p0,j)*power(1-p0,n-j);
 				}
 				
-				double absValue = java.lang.Math.abs(1-a-b);
+				if(b<0.04){
+					break outer;
+				} else if(b >0.4 || abs(b-1+a) > 0.1) {
+					continue;
+				} else {
+					if(abs(1-a-b)<0.001) {
+						schemeAjax = "[{\"sampleSize\":\""+n+"\",\"faultNum\":\""+c+"\",\"user\":\""+a+"\",\"productor\":\""+b+"}]";
+						
+					} else {
+						
+					}
+					return SUCCESS;
+					//double absValue = java.lang.Math.abs(1-a-b);
+				}
 				
-				if(absValue <= 0.02d) break outer;
+				//if(absValue <= 0.02d) break outer;
 			}
 		}
 		
